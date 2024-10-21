@@ -1,72 +1,153 @@
 body {
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #7e8ca0;
+  background-color: #e0e0e0;
   font-family: sans-serif;
+  margin: 0;
 }
 
 .calculator {
-  width: 300px;
-  padding-bottom: 15px;
-  border-radius: 7px;
-  background-color: #3e78ca;
-  box-shadow: 5px 8px 8px -2px rgba(0, 0, 0, 0.61);
+  width: 260px;
+  border-radius: 15px;
+  background-color: #333;
+  padding: 20px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
 .display {
   width: 100%;
-  height: 80px;
+  height: 50px;
   border: none;
   box-sizing: border-box;
   padding: 10px;
-  font-size: 36px;
-  background-color: #a5b9ab;
-  color: #000;
+  font-size: 32px;
+  background-color: #4a4a4a;
+  color: #fff;
   text-align: right;
-  border-top-left-radius: 7px;
-  border-top-right-radius: 7px;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  margin-bottom: 20px;
+  border-radius: 10px;
 }
 
-.row {
-  display: flex;
-  justify-content: space-between;
+.keys {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-gap: 10px;
 }
 
 button {
-  width: 50px;
   height: 50px;
-  border-radius: 25%;
+  font-size: 1.4rem;
   border: none;
-  outline: none;
-  font-size: 1.5rem;
-  background-color: rgb(160, 192, 211);
-  color: #1e1168;
-  margin: 10px;
+  border-radius: 10px;
+  background-color: #505050;
+  color: white;
+  transition: background-color 0.2s;
 }
 
 button:hover {
   cursor: pointer;
-  transform: scale(0.95);
+  background-color: #666;
 }
 
-button:active {
-  color: #07c426;
+button.clear_btn:hover {
+  cursor: pointer;
+  background-color: #f42a2a;
 }
 
-.operator {
-  background-color: #bd3624;
-  color: #000;
+button.operator {
+  background-color: #f1a33c;
 }
 
-.split {
-  border-radius: 25%;
-  margin-left: 85px;
+button.operator:hover {
+  background-color: #f09722;
+}
+
+button.clear_btn {
+  background-color: #ff5c5c;
+}
+
+button#result {
+  background-color: #f1a33c;
+}
+
+.dark-theme {
+  background-color: #121212;
+}
+
+.dark-theme .calculator {
+  background-color: #1e1e1e;
+}
+
+.dark-theme .display {
+  background-color: #424242;
+}
+
+.dark-theme button {
+  background-color: #4a4a4a;
+  color: #fff;
+}
+
+.dark-theme button.clear_btn {
+  background-color: #ff3b3b;
+}
+
+.dark-theme button.clear_btn:hover {
+  background-color: #f42a2a;
+}
+
+.dark-theme button.operator {
+  background-color: #f1a33c;
+}
+
+.dark-theme button.operator:hover {
+  background-color: #f09722;
+}
+
+.theme-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.toggle-text {
+  margin-top: 5px;
+  font-size: 0.8rem;
+  color: #fff;
+}
+
+.theme-toggle input {
+  display: none;
+}
+
+.toggle-label {
+  width: 60px;
+  height: 30px;
+  background-color: #505050;
+  border-radius: 30px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.toggle-label::after {
+  content: '';
+  width: 26px;
+  height: 26px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  bottom: 2px;
+  transition: transform 0.2s;
+}
+
+#theme-toggle:checked + .toggle-label {
+  background-color: #f1a33c;
+}
+
+#theme-toggle:checked + .toggle-label::after {
+  transform: translateX(30px);
 }

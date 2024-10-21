@@ -1,6 +1,6 @@
 export class Calculator {
   add(firstValue, secondValue) {
-    return firstValue + secondValue;
+    return (firstValue*10 + secondValue*10)/10;
   }
 
   subtract(firstValue, secondValue) {
@@ -13,12 +13,16 @@ export class Calculator {
 
   divide(firstValue, secondValue) {
     if (secondValue === 0) {
-      throw new Error('Cannot divide by zero');
+      console.log('Cannot divide by zero');
     }
     return firstValue / secondValue;
   }
 
+  percentage(firstValue, secondValue) {
+    return (firstValue * secondValue) / 100;
+  }
+
   reset() {
-    this.currentValue = null; // Сброс текущего значения
+    this.currentValue = null;
   }
 }

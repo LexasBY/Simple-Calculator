@@ -5,128 +5,190 @@ const calculator = new Calculator();
 const display = document.querySelector('.display');
 const numberButtons = document.querySelectorAll('.number');
 const operatorButtons = document.querySelectorAll('.operator');
-const clearButtons = document.querySelectorAll('.clear_btn');
+const clearButton = document.querySelector('.clear_btn');
 const resultButton = document.getElementById('result');
-const decimalButton = document.getElementById('decimal');
+const commaButton = document.getElementById('comma');
+const percentButton = document.getElementById('percent');
 
-let currentExpression = ''; // Для хранения всего выражения
-let firstValue = null; // Для первого числа
-let currentOperator = null; // Для текущего оператора
-let result = null; // Для хранения результата последней операции
-let shouldResetDisplay = false; // Флаг для сброса дисплея после ввода оператора
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
+const toggleSignButton = document.getElementById('toggle-sign');
 
-const operatorMap = {
-  '+': 'add',
-  '-': 'subtract',
-  '*': 'multiply',
-  '/': 'divide',
+let firstValue = '';
+let secondValue = '';
+let currentOperator = '';
+let result = null;
+let isSecondValueInput = false;
+let finish = false;
+
+const updateDisplay = (value) => {
+  display.value = value || '0';
 };
 
-// Обновляем дисплей
-const updateDisplay = () => {
-  display.value = currentExpression || '0'; // Если выражение пустое, показываем '0'
-};
-
-// Сбрасываем калькулятор
 const resetCalculator = () => {
-  currentExpression = ''; // Сбрасываем выражение
-  firstValue = null; // Сбрасываем первое значение
-  currentOperator = null; // Сбрасываем текущий оператор
-  result = null; // Сбрасываем результат
+  firstValue = '';
+  secondValue = '';
+  currentOperator = '';
+  result = null;
+  isSecondValueInput = false;
+  finish = false;
+  updateDisplay();
 };
 
-// Обработка нажатий на цифры
 numberButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    // Если результат уже есть и мы нажали на число, начинаем новое выражение
-    if (shouldResetDisplay) {
-      currentExpression = ''; // Очищаем предыдущее выражение
-      shouldResetDisplay = false; // Сбрасываем флаг
+    const key = button.textContent;
+
+    if (finish) {
+      resetCalculator();
     }
-    // Добавляем цифру к выражению
-    currentExpression += button.textContent;
-    updateDisplay(); // Обновляем дисплей
-  });
-});
 
-// Обработка нажатия на оператор
-operatorButtons.forEach((button) => {
-  button.addEventListener('click', () => {
-    const secondValue = parseFloat(currentExpression.split(' ').pop()); // Получаем второе значение
-
-    // Если уже есть первое значение и оператор, выполняем операцию
-    if (firstValue !== null && currentOperator) {
-      // Проверяем, существует ли функция для текущего оператора
-      if (
-        operatorMap[currentOperator] &&
-        typeof calculator[operatorMap[currentOperator]] === 'function'
-      ) {
-        result = calculator[operatorMap[currentOperator]](
-          firstValue,
-          secondValue,
-        ); // Выполняем операцию
-        currentExpression = `${result} `; // Обновляем выражение только результатом
-        firstValue = result; // Запоминаем результат для дальнейших вычислений
-      } else {
-        console.error(`Оператор ${currentOperator} не найден.`);
-      }
+    if (!isSecondValueInput) {
+      firstValue += key;
+      updateDisplay(firstValue);
     } else {
-      // Сохраняем первое значение, если его ещё нет
-      firstValue = parseFloat(currentExpression);
-      currentExpression += ` ${button.textContent} `; // Добавляем оператор к выражению
+      secondValue += key;
+      updateDisplay(secondValue);
     }
-
-    updateDisplay(); // Обновляем дисплей
-    currentOperator = button.textContent; // Сохраняем текущий оператор
-    shouldResetDisplay = false; // Устанавливаем флаг для сброса дисплея
   });
 });
 
-// Обработка нажатия на кнопку результата
-resultButton.addEventListener('click', () => {
-  const secondValue = parseFloat(currentExpression.split(' ').pop()); // Получаем второе значение
+operatorButtons.forEach((button) => {
+  const operator = button.textContent;
 
-  // Если есть первое значение и оператор
-  if (firstValue !== null && currentOperator) {
-    if (!isNaN(secondValue)) {
-      // Проверяем, существует ли функция для текущего оператора
-      if (
-        operatorMap[currentOperator] &&
-        typeof calculator[operatorMap[currentOperator]] === 'function'
-      ) {
-        result = calculator[operatorMap[currentOperator]](
-          firstValue,
-          secondValue,
-        ); // Выполняем операцию
-        currentExpression = `${result}`; // Обновляем выражение только результатом
-        firstValue = result; // Сохраняем результат для дальнейших вычислений
-        updateDisplay(); // Обновляем дисплей
-        currentOperator = null; // Сбрасываем текущий оператор
-      } else {
-        console.error(`Оператор ${currentOperator} не найден.`);
-      }
-    }
-  }
-});
-
-// Обработка нажатия на кнопку точки
-decimalButton.addEventListener('click', () => {
-  // Добавляем точку, если она ещё не введена в текущее число
-  const currentNumber = currentExpression.split(' ').pop();
-  if (!currentNumber.includes('.')) {
-    currentExpression += '.';
-    updateDisplay();
-  }
-});
-
-// Обработка кнопок очистки
-clearButtons.forEach((button) => {
   button.addEventListener('click', () => {
-    if (button.id === 'c') {
-      resetCalculator(); // Сбрасываем все значения
-    } else if (button.id === 'ce') {
-      currentExpression = ''; // Очищаем текущее значение
+    if (operator === '-' && firstValue === '' && !isSecondValueInput) {
+      firstValue = '-';
+      updateDisplay(firstValue);
+      return;
     }
-    updateDisplay(); // Обновляем дисплей
+
+    if (operator === '-' && isSecondValueInput && secondValue === '') {
+      secondValue = '-';
+      updateDisplay(secondValue);
+      return;
+    }
+
+    if (isSecondValueInput && secondValue !== '') {
+      calculate();
+    }
+
+    currentOperator = operator;
+
+    if (result !== null && !isSecondValueInput) {
+      firstValue = result.toString();
+    }
+
+    isSecondValueInput = true;
+    finish = false;
+    updateDisplay(currentOperator);
   });
+});
+
+percentButton.addEventListener('click', () => {
+  if (firstValue !== '' && secondValue !== '') {
+    updateDisplay(`${secondValue}%`);
+
+    const percentValue = calculator.percentage(
+      parseFloat(firstValue),
+      parseFloat(secondValue),
+    );
+
+    secondValue = percentValue.toString();
+  }
+});
+
+const calculate = () => {
+  const num1 = parseFloat(firstValue);
+  const num2 = parseFloat(secondValue);
+
+  switch (currentOperator) {
+    case '+':
+      result = calculator.add(num1, num2);
+      break;
+    case '-':
+      result = calculator.subtract(num1, num2);
+      break;
+    case '×':
+      result = calculator.multiply(num1, num2);
+      break;
+    case '÷':
+      if (num2 === 0) {
+        updateDisplay('Error');
+        return;
+      }
+      result = calculator.divide(num1, num2);
+      break;
+  }
+
+  firstValue = result.toString();
+  secondValue = '';
+  currentOperator = '';
+  isSecondValueInput = false;
+  finish = true;
+  updateDisplay(result);
+};
+
+commaButton.addEventListener('click', () => {
+  const currentNumber = isSecondValueInput ? secondValue : firstValue;
+  if (!currentNumber.includes('.')) {
+    if (isSecondValueInput) {
+      secondValue += '.';
+      updateDisplay(secondValue);
+    } else {
+      firstValue += '.';
+      updateDisplay(firstValue);
+    }
+  }
+});
+
+clearButton.addEventListener('click', () => {
+  resetCalculator();
+  updateDisplay();
+});
+
+toggleSignButton.addEventListener('click', () => {
+  let currentValue = isSecondValueInput ? secondValue : firstValue;
+
+  if (currentValue !== '') {
+    const newValue = (-parseFloat(currentValue)).toString();
+
+    if (isSecondValueInput) {
+      secondValue = newValue;
+    } else {
+      firstValue = newValue;
+    }
+
+    updateDisplay(newValue);
+
+    if (finish) {
+      result = parseFloat(newValue);
+      firstValue = result.toString();
+    }
+  }
+});
+
+resultButton.addEventListener('click', () => {
+  if (firstValue !== '' && currentOperator !== '') {
+    if (secondValue === '' && result !== null) {
+      secondValue = firstValue;
+    }
+
+    calculate();
+  }
+});
+
+if (localStorage.getItem('theme') === 'dark') {
+  body.classList.add('dark-theme');
+  themeToggle.checked = true;
+}
+
+themeToggle.addEventListener('change', () => {
+  if (themeToggle.checked) {
+    body.classList.add('dark-theme');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    body.classList.remove('dark-theme');
+    localStorage.setItem('theme', 'light');
+  }
 });
