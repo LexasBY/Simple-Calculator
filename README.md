@@ -1,11 +1,13 @@
 # Simple-Calculator
 
 ## 1. Task
+
 [Google Docs Task Description](https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/edit?tab=t.0#heading=h.5dt3hghpa22f)
 
 ## 2. How to Run the App
 
 ### For Development:
+
 1. Install dependencies:
 
    ```bash
@@ -21,6 +23,7 @@
    The application will be available at [http://localhost:8080](http://localhost:8080).
 
 ### For Production Build:
+
 1. Build the project:
 
    ```bash
@@ -61,6 +64,7 @@ simple-calculator/
 The application is set up to use **ESLint** and **Prettier** for code linting and formatting.
 
 #### How to Run Code Checks:
+
 - Linting with ESLint:
 
   ```bash
@@ -77,14 +81,20 @@ The application is set up to use **ESLint** and **Prettier** for code linting an
 
 The project is configured with a pre-commit hook using **Husky** and **lint-staged**, which automatically checks the code with ESLint. If there are errors, the commit will not be completed.
 
+### 5. Deployment
+
+The application has been successfully deployed using GitHub Pages and is available at the following address: https://lexasby.github.io/Simple-Calculator/.
+
 ---
 
 ## 1. Задача
+
 [Описание задачи в Google Docs](https://docs.google.com/document/d/1zpXXeSae-BlcxPKgw3DhxZA92cspVailrPYoaXSYrW8/edit?tab=t.0#heading=h.5dt3hghpa22f)
 
 ## 2. Как запустить приложение
 
 ### Для разработки:
+
 1. Установите зависимости:
 
    ```bash
@@ -100,6 +110,7 @@ The project is configured with a pre-commit hook using **Husky** and **lint-stag
    Приложение будет доступно по адресу [http://localhost:8080](http://localhost:8080).
 
 ### Для production сборки:
+
 1. Соберите проект:
 
    ```bash
@@ -141,6 +152,7 @@ simple-calculator/
 Приложение настроено на использование **ESLint** и **Prettier** для линтинга и форматирования кода.
 
 #### Как запустить проверку кода:
+
 - Линтинг с помощью ESLint:
 
   ```bash
@@ -156,3 +168,7 @@ simple-calculator/
 #### Pre-commit hook:
 
 В проект настроен pre-commit hook с помощью **Husky** и **lint-staged**, который автоматически проверяет код с помощью ESLint. Если есть ошибки, коммит не будет выполнен.
+
+### 5. Деплой
+
+Приложение было задеплоено с использованием GitHub Pages и доступно по следующему адресу: https://lexasby.github.io/Simple-Calculator/.
