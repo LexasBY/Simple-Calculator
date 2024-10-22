@@ -86,15 +86,21 @@ operatorButtons.forEach((button) => {
 });
 
 percentButton.addEventListener('click', () => {
-  if (firstValue !== '' && secondValue !== '') {
+  if (firstValue !== '' && secondValue === '' && currentOperator === '') {
+    firstValue = (parseFloat(firstValue) / 100).toString();
+    updateDisplay(`${firstValue}`);
+  } else if (firstValue !== '' && secondValue !== '') {
     updateDisplay(`${secondValue}%`);
 
-    const percentValue = calculator.percentage(
-      parseFloat(firstValue),
-      parseFloat(secondValue),
-    );
-
-    secondValue = percentValue.toString();
+    if (currentOperator === '×' || currentOperator === '÷') {
+      secondValue = (parseFloat(secondValue) / 100).toString();
+    } else {
+      const percentValue = calculator.percentage(
+        parseFloat(firstValue),
+        parseFloat(secondValue),
+      );
+      secondValue = percentValue.toString();
+    }
   }
 });
 
