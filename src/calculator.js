@@ -1,6 +1,6 @@
 export class Calculator {
   add(firstValue, secondValue) {
-    return (firstValue*10 + secondValue*10)/10;
+    return (firstValue * 10 + secondValue * 10) / 10;
   }
 
   subtract(firstValue, secondValue) {

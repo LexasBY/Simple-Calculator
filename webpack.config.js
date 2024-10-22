@@ -1,17 +1,17 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const TerserPlugin = require('terser-webpack-plugin');
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+import path from 'path';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import TerserPlugin from 'terser-webpack-plugin';
+import CssMinimizerPlugin from 'css-minimizer-webpack-plugin';
 
-module.exports = (env, argv) => {
+export default (env, argv) => {
   const isProduction = argv.mode === 'production';
 
   return {
     entry: './src/index.js',
     output: {
-      filename: 'main.[contenthash].js', // JS файл с хэшом для кеширования
-      path: path.resolve(__dirname, 'dist'),
-      clean: true,  // Очистка папки dist перед сборкой
+      filename: 'main.[contenthash].js',
+      path: path.resolve(process.cwd(), 'dist'),
+      clean: true,
     },
     module: {
       rules: [
@@ -24,10 +24,7 @@ module.exports = (env, argv) => {
         },
         {
           test: /\.css$/,
-          use: [
-            'style-loader',  // Встраиваем стили в JS
-            'css-loader',  // Обрабатываем CSS
-          ],
+          use: ['style-loader', 'css-loader'],
         },
       ],
     },
@@ -52,10 +49,7 @@ module.exports = (env, argv) => {
     ],
     optimization: {
       minimize: isProduction,
-      minimizer: [
-        new TerserPlugin(),  // Минификация JS
-        new CssMinimizerPlugin(),  // Минификация встроенных стилей
-      ],
+      minimizer: [new TerserPlugin(), new CssMinimizerPlugin()],
     },
     devServer: {
       static: './dist',
